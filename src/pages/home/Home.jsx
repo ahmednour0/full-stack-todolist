@@ -23,13 +23,11 @@ const Home = () => {
   const sendAgain = () => {
     sendEmailVerification(auth.currentUser).then(() => {
       console.log("Email verification sent!");
-      // ...
+ 
     });
   };
 
-  // ===============================
-  //    FUNCTIONS of Modal
-  // ===============================
+
   const [showModal, setshowModal] = useState(false);
   const [showLoading, setshowLoading] = useState(false);
   const [showMessage, setshowMessage] = useState(false);
@@ -51,19 +49,16 @@ const Home = () => {
     setsubTask(eo.target.value);
   };
 
-  const addBTN = (eo) => {
-    eo.preventDefault();
+ const addBTN = (eo) => {
+  eo.preventDefault();
 
-    if (!array.includes(subTask) ) {
-      array.push(subTask);
-    }
-    else if (!array === "") {
-      array.push(subTask);
-    }
+  if (subTask.trim() !== "" && !array.includes(subTask)) {
+    array.push(subTask);
+  }
 
-    console.log(array);
-    setsubTask("");
-  };
+  console.log(array);
+  setsubTask("");
+};
 
   const submitBTN = async (eo) => {
     eo.preventDefault();

@@ -1,4 +1,3 @@
-import Header from "../../comp/header";
 import Footer from "../../comp/Footer";
 
 import { Link } from "react-router-dom";
@@ -14,6 +13,7 @@ import "./signin.css";
 import Modal from "shared/Modal";
 import ReactLoading from "react-loading";
 import { useTranslation } from "react-i18next";
+import Header from "./../../comp/header.jsx";
  
 
 const Signin = () => {
@@ -25,7 +25,7 @@ const Signin = () => {
   const [hasError, sethasError] = useState(false);
   const [firebaseError, setfirebaseError] = useState("");
   const [showSendEmail, setshowSendEmail] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const signInBTN = async (eo) => {
     setshowLoading(true);
     eo.preventDefault();

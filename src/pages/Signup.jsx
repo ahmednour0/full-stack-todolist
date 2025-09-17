@@ -42,66 +42,58 @@ const Signup = () => {
     }
   });
   //
-  const signUpBTN = async (eo) => {
-    eo.preventDefault();
-    setshowLoading(true);
-  await  createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        sendEmailVerification(auth.currentUser).then(() => {
-          //
-          console.log("Email verification sent!");
-        });
+ const signUpBTN = async (eo) => {
+  eo.preventDefault();
+  setshowLoading(true);
 
-        updateProfile(auth.currentUser, {
-          displayName: userName,
-        })
-          .then(() => {
-            navigate("/");
-          })
-          .catch((error) => {
-            console.log(error.code);
-            // ...
-          });
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        console.log(errorCode);
-        sethasError(true);
+    // ابعت رسالة التفعيل
+    await sendEmailVerification(user);
+    console.log("✅ Email verification sent!");
 
-        switch (errorCode) {
-          case "auth/invalid-email":
-            setfirebaseError("Wrong Email");
-            break;
+    // تحديث البروفايل
+    await updateProfile(user, {
+      displayName: userName,
+    });
 
-          case "auth/operation-not-allowed":
-            setfirebaseError("للأسف لا  يُمكن   إنشاء حساب فى الوقت الحالى");
-            break;
+    navigate("/");
+  } catch (error) {
+    console.log(error.code);
+    sethasError(true);
 
-          case "auth/user-not-found":
-            setfirebaseError("Wrong Email");
-            break;
+    switch (error.code) {
+      case "auth/invalid-email":
+        setfirebaseError("Wrong Email");
+        break;
 
-          case "auth/wrong-password":
-            setfirebaseError("Wrong Password");
-            break;
+      case "auth/operation-not-allowed":
+        setfirebaseError("للأسف لا  يُمكن   إنشاء حساب فى الوقت الحالى");
+        break;
 
-          case "auth/too-many-requests":
-            setfirebaseError("Too many requests, please try aganin later");
-            break;
+      case "auth/user-not-found":
+        setfirebaseError("Wrong Email");
+        break;
 
-          default:
-            setfirebaseError("Please check your email & password");
-            break;
-        }
-      });
+      case "auth/wrong-password":
+        setfirebaseError("Wrong Password");
+        break;
 
-    setshowLoading(false);
-  };
+      case "auth/too-many-requests":
+        setfirebaseError("Too many requests, please try aganin later");
+        break;
+
+      default:
+        setfirebaseError("Please check your email & password");
+        break;
+    }
+  }
+
+  setshowLoading(false);
+};
+
 
   if (error) {
     return <Erroe404 />;

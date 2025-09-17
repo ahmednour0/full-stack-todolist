@@ -61,7 +61,7 @@ const Signin = () => {
             break;
 
           case "auth/too-many-requests":
-            setfirebaseError("Too many requests, please try aganin later");
+            setfirebaseError("Too many requests, please try again in later");
             break;
 
           default:
